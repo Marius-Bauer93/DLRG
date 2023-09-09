@@ -4,29 +4,7 @@ This script 'mail_service.py' provides an automation to send
 several templated HTML emails to multiple different recipients.
 
 Example call:
-    # Request usage
-    $ python3 mail_service.py -h
-    $ python3 mail_service.py --help
-    
-    #DLRG (default) usage
-    $ python3 mail_service.py -s "someone@example.com" -r "someone-else@example.com" -u "my-user"
-    $ python3 mail_service.py --sender "someone@example.com" --reciever "someone-else@example.com" --user "my-user"
-
-    # Usage
-    $ python3 mail_service.py -s "someone@example.com" -r "someone-else@example.com" -u "my-user" -ms "example.mail.com" -mp 465
-    $ python3 mail_service.py --sender "someone@example.com" --reciever "someone-else@example.com" --user "my-user" --mail-server "example.mail.com" --mail-port 465
-
-    # Leaked password usage
-    $ python3 mail_service.py -s "someone@example.com" -r "someone-else@example.com" -u "my-user" -ms "example.mail.com" -mp 465 -p "SecretKeyWord"
-    $ python3 mail_service.py --sender "someone@example.com" --reciever "someone-else@example.com" --user "my-user" --mail-server "example.mail.com" --mail-port 465 --password "SecretKeyWord"
-
-    # Debug usage
-    $ python3 mail_service.py --s "someone@example.com" -r "someone-else@example.com" -u "my-user" -ms "example.mail.com" -mp 465 -v "True"
-    $ python3 mail_service.py --sender "someone@example.com" --reciever "someone-else@example.com" --user "my-user" --mail-server "example.mail.com" --mail-port 465 --verbose "True"
-    
-
-Args:
-    DEBUG (bool): detailed output during troubleshootings
+    Please refer to README.md
 
 To-Do:
     - integrate file path option to argparse
