@@ -173,16 +173,16 @@ class email:
 
 if __name__ == '__main__':
     # Prepares container to collect CLI input
-    PARSER = argparse.ArgumentParser(description="Load relevant Mail environment information.")
+    PARSER = argparse.ArgumentParser(description="Load relevant mail environment information.")
 
     # Add the expected input parameters
-    PARSER.add_argument("-s", "--sender", nargs=1, required=True, type=str, dest="sender", help="From where the mail is sent.")
-    PARSER.add_argument("-r", "--reciever", nargs=1, required=True, type=str, dest="reciever", help="List of persons who should recieve the mail.")
-    PARSER.add_argument("-ms", "--mail-server", nargs=1, required=False, type=str, dest="mail_server", default="mail.dlrg.de", help="FQDN from involved mail delivery system.")
-    PARSER.add_argument("-mp", "--mail-port", nargs=1, required=False, type=int, dest="mail_port", default=465, help="SMTP port from the mail delivery system.")
-    PARSER.add_argument("-u", "--user", nargs=1, required=True, type=str, dest="user", help="Registered mail user account for authentication.")
-    PARSER.add_argument("-p", "--password", nargs=1, required=False, type=str, dest="password", default="123", help="Password from mail user.")
-    PARSER.add_argument("-v", "--verbose", nargs=1, required=False, type=bool, dest="debug", default=False, help="Bool to provide verbose output.")
+    PARSER.add_argument("-s", "--sender", required=True, type=str, dest="sender", help="From where the mail is sent.")
+    PARSER.add_argument("-r", "--reciever", nargs="*", required=True, type=str, dest="reciever", help="List of persons who should recieve the mail.")
+    PARSER.add_argument("-ms", "--mail-server", required=False, type=str, dest="mail_server", default="mail.dlrg.de", help="FQDN from involved mail delivery system.")
+    PARSER.add_argument("-mp", "--mail-port", required=False, type=int, dest="mail_port", default=465, help="SMTP port from the mail delivery system.")
+    PARSER.add_argument("-u", "--user", required=True, type=str, dest="user", help="Registered mail user account for authentication.")
+    PARSER.add_argument("-p", "--password", required=False, type=str, dest="password", default="123", help="Password from mail user.")
+    PARSER.add_argument("-v", "--verbose", required=False, type=bool, dest="debug", default=False, help="Bool to provide verbose output.")
     
     # Load gathered inputs
     ARGS = PARSER.parse_args()
@@ -192,21 +192,10 @@ if __name__ == '__main__':
         ARGS.password = getpass.getpass("Please enter your password:")
 
     # Rerender ARGS values, if type matches a list
-    if type(ARGS.sender) == list:
-        ARGS.sender = ARGS.sender[0]
     # TO-DO
     if type(ARGS.reciever) == list:
         ARGS.reciever = ARGS.reciever[0]
-    if type(ARGS.mail_server) == list:
-        ARGS.mail_server = ARGS.mail_server[0]
-    if type(ARGS.mail_port) == list:
-        ARGS.mail_port = ARGS.mail_port[0]
-    if type(ARGS.user) == list:
-        ARGS.user = ARGS.user[0]
-    if type(ARGS.password) == list:
-        ARGS.password = ARGS.password[0]
-    if type(ARGS.debug) == list:
-        ARGS.debug = ARGS.debug[0]
+
     # Check input
     if ARGS.debug:
         print(f"Authentication data: {ARGS.sender}, {ARGS.reciever}, {ARGS.mail_server}, {ARGS.mail_port}, {ARGS.user}, {ARGS.debug}\n")
