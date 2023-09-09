@@ -14,15 +14,15 @@ Example call:
 
     # Usage
     $ python3 mail_service.py -s "someone@example.com" -r "someone-else@example.com" -u "my-user" -ms "example.mail.com" -mp 465
-    $ python3 mail_service.py --sender "someone@example.com" --reciever "someone-else@example.com" --mail_server "example.mail.com" --mail_port 465
+    $ python3 mail_service.py --sender "someone@example.com" --reciever "someone-else@example.com" --user "my-user" --mail-server "example.mail.com" --mail-port 465
 
     # Leaked password usage
     $ python3 mail_service.py -s "someone@example.com" -r "someone-else@example.com" -u "my-user" -ms "example.mail.com" -mp 465 -p "SecretKeyWord"
-    $ python3 mail_service.py --sender "someone@example.com" --reciever "someone-else@example.com" --mail_server "example.mail.com" --mail_port 465 --password "SecretKeyWord"
+    $ python3 mail_service.py --sender "someone@example.com" --reciever "someone-else@example.com" --user "my-user" --mail-server "example.mail.com" --mail-port 465 --password "SecretKeyWord"
 
     # Debug usage
     $ python3 mail_service.py --s "someone@example.com" -r "someone-else@example.com" -u "my-user" -ms "example.mail.com" -mp 465 -v "True"
-    $ python3 mail_service.py --sender "someone@example.com" --reciever "someone-else@example.com" --mail_server "example.mail.com" --mail_port 465 --verbose "True"
+    $ python3 mail_service.py --sender "someone@example.com" --reciever "someone-else@example.com" --user "my-user" --mail-server "example.mail.com" --mail-port 465 --verbose "True"
     
 
 Args:
@@ -178,8 +178,8 @@ if __name__ == '__main__':
     # Add the expected input parameters
     PARSER.add_argument("-s", "--sender", nargs=1, required=True, type=str, dest="sender", help="From where the mail is sent.")
     PARSER.add_argument("-r", "--reciever", nargs=1, required=True, type=str, dest="reciever", help="List of persons who should recieve the mail.")
-    PARSER.add_argument("-ms", "--mail_server", nargs=1, required=False, type=str, dest="mail_server", default="mail.dlrg.de", help="FQDN from involved mail delivery system.")
-    PARSER.add_argument("-mp", "--mail_port", nargs=1, required=False, type=int, dest="mail_port", default=465, help="SMTP port from the mail delivery system.")
+    PARSER.add_argument("-ms", "--mail-server", nargs=1, required=False, type=str, dest="mail_server", default="mail.dlrg.de", help="FQDN from involved mail delivery system.")
+    PARSER.add_argument("-mp", "--mail-port", nargs=1, required=False, type=int, dest="mail_port", default=465, help="SMTP port from the mail delivery system.")
     PARSER.add_argument("-u", "--user", nargs=1, required=True, type=str, dest="user", help="Registered mail user account for authentication.")
     PARSER.add_argument("-p", "--password", nargs=1, required=False, type=str, dest="password", default="123", help="Password from mail user.")
     PARSER.add_argument("-v", "--verbose", nargs=1, required=False, type=bool, dest="debug", default=False, help="Bool to provide verbose output.")
@@ -197,6 +197,10 @@ if __name__ == '__main__':
     # TO-DO
     if type(ARGS.reciever) == list:
         ARGS.reciever = ARGS.reciever[0]
+    if type(ARGS.mail_server) == list:
+        ARGS.mail_server = ARGS.mail_server[0]
+    if type(ARGS.mail_port) == list:
+        ARGS.mail_port = ARGS.mail_port[0]
     if type(ARGS.user) == list:
         ARGS.user = ARGS.user[0]
     if type(ARGS.password) == list:
