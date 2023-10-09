@@ -12,7 +12,7 @@ python3 mail_service.py --help
 ### DLRG (default):
 ```python
 python3 mail_service.py -s "someone@example.com" -r "someone-else@example.com" -u "my-user"
-python3 mail_service.py --sender "someone@example.com" --reciever "someone-else@example.com" --user "my-user
+python3 mail_service.py --sender "someone@example.com" --reciever "someone-else@example.com" --user "my-user"
 ```
 ### General:
 ```python
@@ -31,7 +31,7 @@ python3 mail_service.py --sender "someone@example.com" --reciever "someone-else@
 ```
 
 ## Contributor
-Persons putting effort into the development of tis automation service. In case of any issues with the project feel free to get in contact via GitHub or via email.
+Persons putting effort into the development of this automation service. In case of any issues with the project feel free to get in contact via GitHub or via email.
 |Name|Email|Role|
 |----|-----|----|
 |Marius|unbelievablebauer@t-online.de|Owner|

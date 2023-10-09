@@ -186,4 +186,5 @@ if __name__ == '__main__':
 
     # Mail delivery service call
     # TO-DO
-    MY_MAIL.send_secure_mail(MY_MAIL.render_mail("DRYrun", MY_MAIL.load_mail_body(f"{DIR_PATH}test.html")))
+    # MY_MAIL.send_secure_mail(MY_MAIL.render_mail("DRYrun", MY_MAIL.load_mail_body(f"{DIR_PATH}test.html")))
+    MY_MAIL.send_secure_mail(MY_MAIL.render_mail("DRYrun", MY_MAIL.load_mail_body(f"{DIR_PATH}prescribed_templates/queue_member_invitation.html")))
