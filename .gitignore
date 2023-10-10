@@ -1,1 +1,4 @@
+#login examples
 *.txt
+#local database files
+*.csv

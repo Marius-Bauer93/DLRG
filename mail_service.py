@@ -25,6 +25,8 @@ import os
 # Input
 import argparse
 import getpass
+# database
+import csv
 # Email
 import smtplib
 import ssl
@@ -70,7 +72,7 @@ class email:
             print(f"FROM: {self.sender_email}\nTO: {self.reciever_email}\n")
             print(f"Mail system: {self.mail_server}\nMail port: {self.mail_server_port}\nUser: {self.mail_account}")
 
-    def load_mail_body(self, file_location: str) -> str:
+    def load_mail_body(self, file_location: str, personal_data: list) -> str:
         """Reads the selected HTML template content.
 
         This modules loads the selected HTML body template, which
@@ -85,8 +87,8 @@ class email:
         # Load selected HTML body template
         with open(file_location, "r") as mail_body:
             html_message = mail_body.read()
-
-        return html_message
+        
+        return html_message %(personal_data[1],personal_data[0],personal_data[2],personal_data[1],personal_data[4],personal_data[3],personal_data[5],personal_data[5])
     
     def render_mail(self, subject: str, content: str) -> str:
         """Rendering of the entire email.
@@ -179,12 +181,40 @@ if __name__ == '__main__':
         print(f"Authentication data: {ARGS.sender}, {ARGS.reciever}, {ARGS.mail_server}, {ARGS.mail_port}, {ARGS.user}, {ARGS.debug}\n")
 
     # HTML folder location
-    DIR_PATH = f"{os.path.dirname(os.path.realpath(__file__))}/templates/html_mail_body/"
+    DIR_PATH = f"{os.path.dirname(os.path.realpath(__file__))}/templates/html_mail_body/prescribed_templates/"
+
+    # CSV DB location
+    DB_PATH = f"{os.path.dirname(os.path.realpath(__file__))}/"
+
+    # Load member data from CSV
+    with open(f"{DB_PATH}invite_q3_2023.csv", newline="") as file:
+        FILE_DATA=csv.reader(file)
+        DATA=list(FILE_DATA)
+
+    # Rerender list
+    for contact in DATA:
+        if contact[0].startswith(";") or contact[0].startswith("Nachname;"):
+            DATA.pop(DATA.index(contact))
+    # Slice last list element
+    PRERENDERED_DATA = DATA #DATA[:-1] #
+
+    # Prepare final list
+    RENDERED_LIST = []
+    for contact in PRERENDERED_DATA:
+        contact_details = contact[0].split(";")
+        RENDERED_LIST.append(contact_details)
+    
+    if ARGS.debug:
+        print(RENDERED_LIST)
 
     # Initialize mail service
-    MY_MAIL = email(ARGS.sender, ARGS.reciever, ARGS.mail_server, ARGS.mail_port, ARGS.user, ARGS.password, ARGS.debug)
+    # MY_MAIL = email(ARGS.sender, ARGS.reciever, ARGS.mail_server, ARGS.mail_port, ARGS.user, ARGS.password, ARGS.debug)
+    
+    for invitation in RENDERED_LIST:
+        # Initialize mail service
+        MY_MAIL = email(ARGS.sender, invitation[6], ARGS.mail_server, ARGS.mail_port, ARGS.user, ARGS.password, ARGS.debug)
+        # Mail delivery service call
+        MY_MAIL.send_secure_mail(MY_MAIL.render_mail(invitation[7], MY_MAIL.load_mail_body(f"{DIR_PATH}queue_member_invitation.html", invitation)))
 
     # Mail delivery service call
-    # TO-DO
-    # MY_MAIL.send_secure_mail(MY_MAIL.render_mail("DRYrun", MY_MAIL.load_mail_body(f"{DIR_PATH}test.html")))
-    MY_MAIL.send_secure_mail(MY_MAIL.render_mail("DRYrun", MY_MAIL.load_mail_body(f"{DIR_PATH}prescribed_templates/queue_member_invitation.html")))
+    # MY_MAIL.send_secure_mail(MY_MAIL.render_mail("DRYrun", MY_MAIL.load_mail_body(f"{DIR_PATH}queue_member_invitation.html")))
