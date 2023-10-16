@@ -187,7 +187,7 @@ if __name__ == '__main__':
     DB_PATH = f"{os.path.dirname(os.path.realpath(__file__))}/"
 
     # Load member data from CSV
-    with open(f"{DB_PATH}invite_q3_2023.csv", newline="") as file:
+    with open(f"{DB_PATH}invite_q3_2023_2.csv", newline="") as file:
         FILE_DATA=csv.reader(file)
         DATA=list(FILE_DATA)
 
@@ -195,12 +195,10 @@ if __name__ == '__main__':
     for contact in DATA:
         if contact[0].startswith(";") or contact[0].startswith("Nachname;"):
             DATA.pop(DATA.index(contact))
-    # Slice last list element
-    PRERENDERED_DATA = DATA #DATA[:-1] #
 
     # Prepare final list
     RENDERED_LIST = []
-    for contact in PRERENDERED_DATA:
+    for contact in DATA:
         contact_details = contact[0].split(";")
         RENDERED_LIST.append(contact_details)
     
@@ -211,10 +209,10 @@ if __name__ == '__main__':
     # MY_MAIL = email(ARGS.sender, ARGS.reciever, ARGS.mail_server, ARGS.mail_port, ARGS.user, ARGS.password, ARGS.debug)
     
     for invitation in RENDERED_LIST:
-        # Initialize mail service
-        MY_MAIL = email(ARGS.sender, invitation[6], ARGS.mail_server, ARGS.mail_port, ARGS.user, ARGS.password, ARGS.debug)
-        # Mail delivery service call
-        MY_MAIL.send_secure_mail(MY_MAIL.render_mail(invitation[7], MY_MAIL.load_mail_body(f"{DIR_PATH}queue_member_invitation.html", invitation)))
-
-    # Mail delivery service call
-    # MY_MAIL.send_secure_mail(MY_MAIL.render_mail("DRYrun", MY_MAIL.load_mail_body(f"{DIR_PATH}queue_member_invitation.html")))
+        # add checker for .csv in -r 
+        if invitation[0] != '':
+            # Initialize mail service
+            MY_MAIL = email(ARGS.sender, invitation[6], ARGS.mail_server, ARGS.mail_port, ARGS.user, ARGS.password, ARGS.debug)
+            # Mail delivery service call
+            MY_MAIL.send_secure_mail(MY_MAIL.render_mail(invitation[7], MY_MAIL.load_mail_body(f"{DIR_PATH}queue_member_invitation.html", invitation)))
+        # if no csv normal user flow
