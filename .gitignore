@@ -1,4 +1,6 @@
-#login examples
+# login examples
 *.txt
-#local database files
+# local database files
 *.csv
+# crawled member data
+**/*.json

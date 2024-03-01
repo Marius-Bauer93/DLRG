@@ -88,8 +88,11 @@ class email:
         with open(file_location, "r") as mail_body:
             html_message = mail_body.read()
         
-        return html_message %(personal_data[1],personal_data[0],personal_data[2],personal_data[1],personal_data[4],personal_data[3],personal_data[5],personal_data[5])
-    
+        # Invite
+        # return html_message %(personal_data[1],personal_data[0],personal_data[2],personal_data[1],personal_data[4],personal_data[3],personal_data[5],personal_data[5])
+        # Membership
+        return html_message %(personal_data[1],personal_data[0],personal_data[2])
+
     def render_mail(self, subject: str, content: str) -> str:
         """Rendering of the entire email.
 
@@ -187,7 +190,8 @@ if __name__ == '__main__':
     DB_PATH = f"{os.path.dirname(os.path.realpath(__file__))}/"
 
     # Load member data from CSV
-    with open(f"{DB_PATH}invite_q3_2023_2.csv", newline="") as file:
+    # TO-DO
+    with open(f"{DB_PATH}new_member_q3_2023.csv", newline="") as file:
         FILE_DATA=csv.reader(file)
         DATA=list(FILE_DATA)
 
@@ -212,7 +216,13 @@ if __name__ == '__main__':
         # add checker for .csv in -r 
         if invitation[0] != '':
             # Initialize mail service
-            MY_MAIL = email(ARGS.sender, invitation[6], ARGS.mail_server, ARGS.mail_port, ARGS.user, ARGS.password, ARGS.debug)
+            # Invite
+            # MY_MAIL = email(ARGS.sender, invitation[6], ARGS.mail_server, ARGS.mail_port, ARGS.user, ARGS.password, ARGS.debug)
+            # Membership
+            MY_MAIL = email(ARGS.sender, invitation[3], ARGS.mail_server, ARGS.mail_port, ARGS.user, ARGS.password, ARGS.debug)
             # Mail delivery service call
-            MY_MAIL.send_secure_mail(MY_MAIL.render_mail(invitation[7], MY_MAIL.load_mail_body(f"{DIR_PATH}queue_member_invitation.html", invitation)))
+            # Invite
+            # MY_MAIL.send_secure_mail(MY_MAIL.render_mail(invitation[7], MY_MAIL.load_mail_body(f"{DIR_PATH}queue_member_invitation.html", invitation)))
+            # Membership
+            MY_MAIL.send_secure_mail(MY_MAIL.render_mail(invitation[4], MY_MAIL.load_mail_body(f"{DIR_PATH}queue_membership_request.html", invitation)))
         # if no csv normal user flow
