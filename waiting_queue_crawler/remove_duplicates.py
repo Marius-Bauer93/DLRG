@@ -1,6 +1,23 @@
 import os 
 import json
 
+def extract_and_rewrite(folder_path):
+    # Iterate over each file in the folder
+    for filename in os.listdir(folder_path):
+        if filename.endswith('.json'):
+            file_path = os.path.join(folder_path, filename)
+            with open(file_path, 'r') as file:
+                data = json.load(file)
+                # Extract the first key from the 'Body' dictionary
+                first_key = next(iter(data['Body']))
+                if first_key != 'Absender':
+                    # Remove the first key from the 'Body' dictionary
+                    data['Body'].pop(first_key)
+                    # Write the modified data back to the file
+                    with open(file_path, 'w') as file:
+                        json.dump(data, file, indent=4)
+
+
 def compare_json_files(folder_path):
     # Dictionary to store content based on specified keys
     content_dict = {}
@@ -39,4 +56,5 @@ def compare_json_files(folder_path):
 
 # Example usage
 folder_path = f"{os.path.dirname(os.path.realpath(__file__))}/registration_mails/"
+extract_and_rewrite(folder_path)
 compare_json_files(folder_path)
