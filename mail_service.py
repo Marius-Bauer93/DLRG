@@ -9,7 +9,9 @@ Example call:
 To-Do:
     - integrate file path option to argparse
     - integrate subject to argparse
-    - make reciever become a list and loop over participants
+    - catch error for unescaped html mail formatting
+    - make reciever become a list and loop over participants (csv?)
+      - add support for different Mails
     - add "sewobe" REST API user collection service
 
 DLRG mail config details:
@@ -89,9 +91,9 @@ class email:
             html_message = mail_body.read()
         
         # Invite
-        # return html_message %(personal_data[1],personal_data[0],personal_data[2],personal_data[1],personal_data[4],personal_data[3],personal_data[5],personal_data[5])
+        return html_message %(personal_data[1],personal_data[0],personal_data[2],personal_data[1],personal_data[4],personal_data[3],personal_data[5],personal_data[5])
         # Membership
-        return html_message %(personal_data[1],personal_data[0],personal_data[2])
+        # return html_message %(personal_data[1],personal_data[0],personal_data[2])
 
     def render_mail(self, subject: str, content: str) -> str:
         """Rendering of the entire email.
@@ -191,7 +193,7 @@ if __name__ == '__main__':
 
     # Load member data from CSV
     # TO-DO
-    with open(f"{DB_PATH}new_member_q3_2023.csv", newline="") as file:
+    with open(f"{DB_PATH}invite_q2_2024_SP.csv", newline="") as file:
         FILE_DATA=csv.reader(file)
         DATA=list(FILE_DATA)
 
@@ -217,12 +219,13 @@ if __name__ == '__main__':
         if invitation[0] != '':
             # Initialize mail service
             # Invite
-            # MY_MAIL = email(ARGS.sender, invitation[6], ARGS.mail_server, ARGS.mail_port, ARGS.user, ARGS.password, ARGS.debug)
+            MY_MAIL = email(ARGS.sender, invitation[6], ARGS.mail_server, ARGS.mail_port, ARGS.user, ARGS.password, ARGS.debug)
             # Membership
-            MY_MAIL = email(ARGS.sender, invitation[3], ARGS.mail_server, ARGS.mail_port, ARGS.user, ARGS.password, ARGS.debug)
+            # MY_MAIL = email(ARGS.sender, invitation[3], ARGS.mail_server, ARGS.mail_port, ARGS.user, ARGS.password, ARGS.debug)
             # Mail delivery service call
             # Invite
-            # MY_MAIL.send_secure_mail(MY_MAIL.render_mail(invitation[7], MY_MAIL.load_mail_body(f"{DIR_PATH}queue_member_invitation.html", invitation)))
+            MY_MAIL.send_secure_mail(MY_MAIL.render_mail(invitation[7], MY_MAIL.load_mail_body(f"{DIR_PATH}queue_member_invitation_sp.html", invitation)))
             # Membership
-            MY_MAIL.send_secure_mail(MY_MAIL.render_mail(invitation[4], MY_MAIL.load_mail_body(f"{DIR_PATH}queue_membership_request.html", invitation)))
+            # line 92: change behaviour depending on MAIL
+            # MY_MAIL.send_secure_mail(MY_MAIL.render_mail(invitation[4], MY_MAIL.load_mail_body(f"{DIR_PATH}queue_member_invitation.html", invitation)))
         # if no csv normal user flow
